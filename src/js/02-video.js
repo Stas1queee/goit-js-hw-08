@@ -1,15 +1,17 @@
-import '../css/common.css';
 import Player from '@vimeo/player';
-import { throttle } from 'lodash.throttle';
+import throttle from 'lodash.throttle';
 
-const iframe = document.querySelector('iframe');
+const iframe = document.getElementById('vimeo-player');
 const player = new Player(iframe);
+const VIDEOPLAYER_CURRENT_TIME = 'videoplayer-current-time';
 
 player.on(
   'timeupdate',
   throttle(function (data) {
     const time = data.seconds;
-    console.log(time);
-    localStorage.setItem(TIME_DATA_PLAYER, time);
+    localStorage.setItem(VIDEOPLAYER_CURRENT_TIME, time);
   }, 1000)
 );
+
+const resume = +localStorage.getItem(VIDEOPLAYER_CURRENT_TIME);
+player.setCurrentTime(resume);
